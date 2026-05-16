@@ -27,6 +27,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import {
   normalizeHomepageHeadlinePhrases,
   normalizeHomepageManagedImage,
@@ -218,43 +219,20 @@ const defaultHeroContent = {
   ],
   titleLineOne: "Weight loss",
   titleLineTwo: "tailored to you",
-  description: "Look, feel and perform your best every day.",
-  trustPoints: [
-    {
-      icon: BadgeCheck,
-      label: "Licensed providers in your state",
-    },
-    {
-      icon: Clock3,
-      label: "Free discreet shipping",
-    },
-    {
-      icon: ShieldCheck,
-      label: "FSA & HSA eligible with all plans",
-    },
-  ],
+  descriptin: "",
+  trustPoints: [],
   row1: [
     {
       title: "Personalized\nGLP-1 Treatments",
-      subtitle: "for weight loss",
       image: "/images/marketing/glp1-hero-merged-tight.png",
       href: MARKETING_ROUTES.weightLoss,
       hoverOverlayClass:
         "bg-[radial-gradient(circle_at_center,#37c773_0%,#24ad62_44%,#149353_74%,#0c8c52_100%)]",
       artClass: "scale-[0.96] translate-x-1 sm:scale-[1.0]",
     },
-    {
-      title: "Oxytocin\nNasal Spray",
-      subtitle: "for intimacy support",
-      image: BUNDLE_MARKETING_IMAGES.oxytocinNasalSpray,
-      href: "/oxytocin-nasal-spray",
-      hoverOverlayClass:
-        "bg-[radial-gradient(circle_at_center,#f55b7f_0%,#e94369_42%,#d52b56_72%,#c91d48_100%)]",
-      artClass: "scale-[0.98] translate-x-2",
-    },
+  
     {
       title: "NAD+\nInjections",
-      subtitle: "for energy and longevity",
       image: BUNDLE_MARKETING_IMAGES.nadInjections,
       href: MARKETING_ROUTES.nad,
       hoverOverlayClass:
@@ -265,7 +243,6 @@ const defaultHeroContent = {
   row2: [
     {
       title: "MIC+B12",
-      subtitle: "for mood and energy",
       image: BUNDLE_MARKETING_IMAGES.micB12,
       href: "/mic-injection",
       hoverOverlayClass:
@@ -273,7 +250,6 @@ const defaultHeroContent = {
     },
     {
       title: "Hormone Therapy",
-      subtitle: "for women",
       image: BUNDLE_MARKETING_IMAGES.enclomiphene,
       href: MARKETING_ROUTES.strength,
       hoverOverlayClass:
@@ -281,7 +257,6 @@ const defaultHeroContent = {
     },
     {
       title: "Glutathione",
-      subtitle: "for antioxidant support",
       image: BUNDLE_MARKETING_IMAGES.glutathioneInjections,
       href: "/glutathione-ldn",
       hoverOverlayClass:
@@ -289,7 +264,6 @@ const defaultHeroContent = {
     },
     {
       title: "Skin Care",
-      subtitle: "with NAD+",
       image: WORDPRESS_MARKETING_IMAGES.nadPatches,
       href: MARKETING_ROUTES.antiAging,
       hoverOverlayClass:
@@ -300,7 +274,7 @@ const defaultHeroContent = {
 
 const defaultHomeBanners = [
   {
-    title: "Lose weight Fast with GLP-1s online",
+    title: "Lose 25% of your weight and keep it off",
     subtitle: "• Licensed Providers • No Hidden Fees",
     buttonText: "Qualify in 1 minute",
     buttonHref: getFunnelPath("glp-1"),
@@ -308,7 +282,7 @@ const defaultHomeBanners = [
     backgroundPosition: "top center",
   },
   {
-    title: "Activate arousal — safe, fast, and reliable.",
+    title: "Activate Arousal",
     subtitle: "Discreet • Licensed Providers • No Hidden Fees",
     buttonText: "Qualify in 1 minute",
     buttonHref: getFunnelPath("performance-issues"),
@@ -323,7 +297,7 @@ const defaultHomeBanners = [
     backgroundPosition: "center center",
   },
   {
-    title: "Optimize Growth Hormone. Recover Faster. Perform Stronger.",
+    title: "Restore. Heal. Get Stronger.",
     subtitle: "Clinician-guided recovery support built for consistency",
     buttonText: "Get Started",
     buttonHref: "/sermorelin-injection-2",
@@ -974,10 +948,10 @@ function HeroCategories({ hero = defaultHeroContent }) {
   }, [normalizedHeadlinePhrases.length]);
 
   return (
-    <section className="mx-auto max-w-[1340px] overflow-x-hidden px-4 py-6 sm:py-8 md:px-8 lg:py-10">
+    <section className="mx-auto max-w-[1340px] overflow-x-hidden px-2 py-4 sm:py-6 md:px-4 lg:py-8">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(270px,0.72fr)] lg:items-start lg:gap-8">
         <div>
-          <h1 className="[font-family:'Poppins',sans-serif] flex flex-col text-[clamp(1.95rem,9vw,2.8rem)] font-semibold leading-[0.99] tracking-[-0.05em] text-[#1d1d1f] max-[419px]:text-[clamp(1.72rem,8.2vw,2.2rem)] sm:text-6xl sm:leading-[0.97] lg:text-[4.45rem] lg:leading-[0.95]">
+          <h1 className="[font-family:'Poppins',sans-serif] flex flex-col text-[clamp(1.95rem,9vw,2.8rem)] font-medium leading-[0.99] tracking-[-0.05em] text-[#1d1d1f] max-[419px]:text-[clamp(1.72rem,8.2vw,2.2rem)] sm:text-6xl sm:leading-[0.97] lg:text-[4.45rem] lg:leading-[0.95]">
             <span className="relative block min-h-[1.44em] max-w-full overflow-hidden pb-[0.22em] pt-[0.04em] sm:min-h-[1.28em] sm:pb-[0.16em] sm:pt-[0.02em]">
               <span
                 aria-hidden="true"
@@ -1019,7 +993,7 @@ function HeroCategories({ hero = defaultHeroContent }) {
                           exit: {
                             rotateX: 76,
                             y: "-0.08em",
-                            opacity: 0.18,
+                            opacity: 0,
                             transition: {
                               delay: characterIndex * 0.036,
                               duration: 0.46,
@@ -1068,12 +1042,12 @@ function HeroCategories({ hero = defaultHeroContent }) {
       </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:mt-8">
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {row1.map((cat, index) => (
             <Link
               key={`${cat.title}-${cat.href || index}-${index}`}
               href={cat.href}
-              className={`group relative flex min-h-[280px] w-full flex-col justify-between overflow-hidden rounded-[1.9rem] border border-[#afb2ef] bg-[#C8C9FD] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.1)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#8f93ef] hover:shadow-[0_24px_55px_rgba(109,111,252,0.18)] sm:min-h-[330px] sm:p-7 ${
+              className={`group relative flex min-h-[180px] w-full flex-col justify-between overflow-hidden rounded-[1.9rem] border border-[#afb2ef] bg-[#C8C9FD] p-5 shadow-[0_20px_50px_rgba(15,23,42,0.1)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#8f93ef] hover:shadow-[0_24px_55px_rgba(109,111,252,0.18)] sm:min-h-[200px] sm:p-7 ${
                 index === 2 ? "hidden md:flex" : ""
               }`}
             >
@@ -1115,7 +1089,7 @@ function HeroCategories({ hero = defaultHeroContent }) {
             <Link
               key={`${cat.title}-${cat.href || index}-${index}`}
               href={cat.href}
-              className={`group relative flex min-h-[108px] items-end justify-between overflow-hidden rounded-[1.65rem] border border-[#afb2ef] bg-[#C8C9FD] p-3.5 shadow-[0_18px_45px_rgba(15,23,42,0.07)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#8f93ef] hover:shadow-[0_22px_50px_rgba(109,111,252,0.12)] sm:min-h-[120px] md:min-h-[196px] sm:p-5`}
+              className={`group relative flex min-h-[90px] items-end justify-between overflow-hidden rounded-[1.65rem] border border-[#afb2ef] bg-[#C8C9FD] p-3.5 shadow-[0_18px_45px_rgba(15,23,42,0.07)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#8f93ef] hover:shadow-[0_22px_50px_rgba(109,111,252,0.12)] sm:min-h-[100px] md:min-h-[100px] sm:p-5`}
             >
               <div
                 className={`pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${cat.hoverOverlayClass || ""}`}
@@ -1346,9 +1320,12 @@ function HimsTopSection() {
               />
             </div>
 
-            <div className="mt-auto pt-10">
+            <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
               <span className="[font-family:'Open_Sans',sans-serif] text-[0.7rem] text-white/60">
-                Find your Rx match →
+                Find your Rx match
+              </span>
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white">
+                <ChevronRight className="h-3.5 w-3.5" />
               </span>
             </div>
           </Link>
@@ -1376,9 +1353,12 @@ function HimsTopSection() {
               />
             </div>
 
-            <div className="mt-auto pt-10">
+            <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
               <span className="[font-family:'Open_Sans',sans-serif] text-[0.7rem] text-white/60">
-                ↓ Lose up to 22%* →
+                Lose up to 22%*
+              </span>
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white">
+                <ChevronRight className="h-3.5 w-3.5" />
               </span>
             </div>
           </Link>
@@ -1716,14 +1696,14 @@ function SplitFeatures({ section = defaultSplitFeatures }) {
           </div>
 
           <div className="relative z-10 mt-8 flex justify-center md:mt-10">
-            <div className="relative h-[250px] w-[250px] max-w-full overflow-hidden rounded-[1rem] sm:h-[280px] sm:w-[280px] md:h-[500px] md:w-[440px] md:max-w-full">
+            <div className="relative h-[260px] w-full max-w-full overflow-hidden rounded-[1.5rem] sm:h-[300px] md:h-[500px] md:w-[440px]">
               <Image
                 src={leftCard?.image}
                 alt={leftCard?.imageAlt || leftCard?.title}
                 fill
                 loading="eager"
-                sizes="(min-width: 768px) 440px, 280px"
-                className="rounded-[1rem] border border-white/15 bg-white/8 object-cover shadow-[0_18px_40px_rgba(15,23,42,0.18)] md:rounded-[1rem] md:border-white/12 md:bg-white/8 md:object-contain md:shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
+                sizes="(min-width: 768px) 440px, 100vw"
+                className="rounded-[1.5rem] object-cover object-top shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
               />
             </div>
           </div>
@@ -1778,10 +1758,6 @@ function SplitFeatures({ section = defaultSplitFeatures }) {
           </div>
 
           <div className="relative z-10 mt-auto pt-14">
-            <div className="[font-family:'Open_Sans',sans-serif] flex items-center justify-center gap-3 text-center text-sm font-medium text-white/70">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-white/70" />
-              Personalized path. Smoother intake. Better follow-through.
-            </div>
           </div>
         </motion.article>
       </div>
@@ -1858,9 +1834,9 @@ function ArticleCarousel({ section = defaultArticleCarousel }) {
           <Carousel
             setApi={setApi}
             opts={{
-              align: "center",
-              containScroll: false,
-              loop: true,
+              align: "start",
+              containScroll: "keepSnaps",
+              loop: false,
               duration: 40,
             }}
             className="w-full"
@@ -1873,7 +1849,7 @@ function ArticleCarousel({ section = defaultArticleCarousel }) {
                 return (
                   <CarouselItem
                     key={`${item.title}-${itemIndex}`}
-                    className="basis-[94%] pl-4 sm:basis-[90%] md:basis-[86%] md:pl-6 xl:basis-[80%]"
+                    className="basis-[80%] pl-4 sm:basis-[90%] md:basis-[86%] xl:basis-[80%]"
                   >
                     <article
                       className={`relative h-[460px] overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(15,23,42,0.14)] transition-all duration-500 ease-out md:h-[620px] ${
@@ -1971,16 +1947,22 @@ function CategoryGrid({ section = defaultCategoryGrid }) {
     8,
   );
   const [api, setApi] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const runCarouselAction = useGuardedCarouselAction(api, 430);
 
+  useEffect(() => {
+    if (!api) return;
+    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+  }, [api]);
+
   return (
-    <section className="w-full py-10 md:py-14">
+    <section className="w-full px-4 py-10 md:px-8 md:py-14 lg:px-12">
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center",
-          containScroll: false,
-          loop: true,
+          align: "start",
+          containScroll: "keepSnaps",
+          loop: false,
           duration: 38,
         }}
         className="w-full"
@@ -1989,7 +1971,7 @@ function CategoryGrid({ section = defaultCategoryGrid }) {
           {categories.map((cat, catIndex) => (
             <CarouselItem
               key={`${cat.title || "category"}-${cat.href || catIndex}-${catIndex}`}
-              className="basis-[84%] pl-4 sm:basis-[48%] md:pl-6 lg:basis-[24%] xl:basis-[21.5%] 2xl:basis-[20.25%]"
+              className="basis-[85%] pl-4 sm:basis-[48%] lg:basis-[24%] xl:basis-[21.5%] 2xl:basis-[20.25%]"
             >
               <Link
                 href={cat.href || MARKETING_ROUTES.shop}
@@ -2013,13 +1995,13 @@ function CategoryGrid({ section = defaultCategoryGrid }) {
         </CarouselContent>
       </Carousel>
 
-      <div className="mt-4 hidden items-center justify-end gap-2 px-4 md:flex md:px-6 lg:px-8">
+      <div className="mt-4 hidden items-center justify-end gap-2 px-4 md:flex md:px-12 lg:px-16">
         <button
           type="button"
           onClick={() =>
             runCarouselAction((carouselApi) => carouselApi.scrollPrev())
           }
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 border border-gray-200 transition-colors hover:bg-gray-200 hover:text-gray-800"
           aria-label="Previous categories"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -2029,7 +2011,7 @@ function CategoryGrid({ section = defaultCategoryGrid }) {
           onClick={() =>
             runCarouselAction((carouselApi) => carouselApi.scrollNext())
           }
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 border border-gray-200 transition-colors hover:bg-gray-200 hover:text-gray-800"
           aria-label="Next categories"
         >
           <ChevronRight className="h-5 w-5" />
@@ -2042,12 +2024,18 @@ function CategoryGrid({ section = defaultCategoryGrid }) {
 function BlogCarousel({ section = defaultBlogCarousel }) {
   const posts =
     section.posts?.length > 0 ? section.posts : defaultBlogCarousel.posts;
-  const carouselPosts = buildLoopingItems(posts, 8);
+  const carouselPosts = posts;
   const [api, setApi] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const runCarouselAction = useGuardedCarouselAction(api, 430);
 
+  useEffect(() => {
+    if (!api) return;
+    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+  }, [api]);
+
   return (
-    <section className="bg-white py-20 md:py-24">
+    <section className="bg-white px-4 pb-32 pt-20 md:px-8 md:pb-36 md:pt-24 lg:px-12">
       <div className="mx-auto mb-12 max-w-3xl px-4 text-center md:px-6 lg:px-8">
         <h2 className="[font-family:'Poppins',sans-serif] mb-4 text-3xl font-semibold tracking-[-0.04em] text-black md:text-5xl">
           {section.title || defaultBlogCarousel.title}
@@ -2060,18 +2048,22 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center",
-          containScroll: false,
-          loop: true,
+          align: "start",
+          containScroll: "keepSnaps",
+          loop: false,
           duration: 38,
+          dragFree: true,
+          skipSnaps: true,
         }}
+        plugins={[WheelGesturesPlugin()]}
         className="w-full"
+        style={{ cursor: "grab" }}
       >
         <CarouselContent className="-ml-4 items-stretch md:-ml-6">
           {carouselPosts.map((post, postIndex) => (
             <CarouselItem
               key={`${post.title}-${postIndex}`}
-              className="box-border basis-[84%] pl-4 sm:basis-[52%] md:basis-[48%] md:pl-6 xl:basis-[29.5%] 2xl:basis-[28.5%]"
+              className="box-border basis-[88%] pl-4 sm:basis-[52%] md:basis-[48%] xl:basis-[29.5%] 2xl:basis-[28.5%]"
             >
               <article className="flex h-full min-h-[440px] min-w-0 flex-col overflow-hidden rounded-[20px] border border-[#dfe3ef] bg-white shadow-[0_14px_30px_rgba(15,23,42,0.06)] md:min-h-[470px]">
                 <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#e8ecfb]">
@@ -2126,6 +2118,17 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
         </CarouselContent>
       </Carousel>
 
+      <div className="mt-3 flex items-center justify-center gap-1.5 md:hidden">
+        {(section.posts || defaultBlogCarousel.posts).slice(0, 5).map((_, dotIndex) => (
+          <button
+            key={dotIndex}
+            type="button"
+            aria-label={`Go to slide ${dotIndex + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 ${selectedIndex === dotIndex ? "w-4 bg-[#7b75f0]" : "w-2 bg-gray-300"}`}
+          />
+        ))}
+      </div>
+
       <div className="mt-4 hidden items-center justify-end gap-4 px-4 md:flex md:px-6 lg:px-8">
         <div className="flex gap-2">
           <button
@@ -2133,7 +2136,7 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollPrev())
             }
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex === 0 ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -2142,7 +2145,7 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollNext())
             }
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex >= (carouselPosts.length - 1) ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -2153,17 +2156,20 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
 }
 
 function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
-  const stories = buildLoopingItems(
-    section.stories?.length > 0
-      ? section.stories
-      : defaultMemberStoriesSection.stories,
-    8,
-  );
+  const stories = section.stories?.length > 0
+    ? section.stories
+    : defaultMemberStoriesSection.stories;
   const [api, setApi] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const runCarouselAction = useGuardedCarouselAction(api, 430);
 
+  useEffect(() => {
+    if (!api) return;
+    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+  }, [api]);
+
   return (
-    <section className="w-full py-12 md:py-14">
+    <section className="w-full px-4 py-6 md:px-8 md:py-10 lg:px-12">
       <div className="mb-6 flex flex-col items-center justify-between gap-4 px-4 text-center sm:flex-row sm:text-left md:px-6 lg:px-8">
         <div className="w-full">
           <h2 className="[font-family:'Poppins',sans-serif] text-3xl font-semibold tracking-[-0.04em] text-[#1c1d20] md:text-5xl">
@@ -2177,7 +2183,7 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollPrev())
             }
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex === 0 ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -2186,7 +2192,7 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollNext())
             }
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex >= (stories.length - 1) ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -2196,18 +2202,23 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center",
-          containScroll: false,
-          loop: true,
+          align: "start",
+          containScroll: "keepSnaps",
+          loop: false,
           duration: 38,
+          dragFree: true,
+          skipSnaps: true,
         }}
+        plugins={[WheelGesturesPlugin()]}
         className="w-full"
+        style={{ cursor: "grab" }}
       >
         <CarouselContent className="-ml-4 items-stretch md:-ml-6">
           {stories.map((story, storyIndex) => (
             <CarouselItem
               key={`${story.name}-${storyIndex}`}
-              className="basis-[88%] pl-4 sm:basis-[54%] md:pl-6 xl:basis-[29.5%] 2xl:basis-[28.5%]"
+              className="basis-[72%] pl-4 sm:basis-[54%] xl:basis-[29.5%] 2xl:basis-[28.5%]"
+              
             >
               <motion.article
                 initial={{ opacity: 0, y: 18 }}
@@ -2252,6 +2263,18 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
           ))}
         </CarouselContent>
       </Carousel>
+
+      <div className="mt-3 flex items-center justify-center gap-1.5 md:hidden">
+        {(section.stories || defaultMemberStoriesSection.stories).slice(0, 5).map((_, dotIndex) => (
+          <button
+            key={dotIndex}
+            type="button"
+            onClick={() => api?.scrollTo(dotIndex)}
+            aria-label={`Go to slide ${dotIndex + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 ${selectedIndex === dotIndex ? "w-4 bg-[#7b75f0]" : "w-2 bg-gray-300"}`}
+          />
+        ))}
+      </div>
     </section>
   );
 }
@@ -2322,7 +2345,7 @@ export default function MarketingHomePage({
           <HeroCategories hero={activeHero} />
         </div>
 
-        <NegativeSellSection />
+     {/* <NegativeSellSection /> */}
 
         {/* Keep these optional sections behind a flag so we can restore them quickly if needed. */}
         {showDeferredHomeSections ? (
@@ -2337,7 +2360,7 @@ export default function MarketingHomePage({
         <MarketingProductCarousel products={energyCarousel} eagerImages />
         <SplitFeatures section={activeSplitFeatures} />
         <ArticleCarousel section={activeArticleCarousel} />
-        <CategoryGrid section={activeCategoryGrid} />
+        {/* <CategoryGrid section={activeCategoryGrid} /> */}
         <MemberStoriesSection section={activeMemberStoriesSection} />
         <BlogCarousel section={activeBlogCarousel} />
 
@@ -2352,3 +2375,5 @@ export default function MarketingHomePage({
     </div>
   );
 }
+
+

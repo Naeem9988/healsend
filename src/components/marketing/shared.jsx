@@ -1,5 +1,6 @@
 "use client";
 
+
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,6 +30,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 
+
 const ROUTES = MARKETING_ROUTE_PATHS;
 const LEGITSCRIPT_VERIFICATION_URL =
   "https://www.legitscript.com/websites/?checker_keywords=healsend.com";
@@ -38,6 +40,7 @@ const DESKTOP_NAV_PROMO_IMAGES = Object.freeze({
   strengthRecovery: WORDPRESS_MARKETING_IMAGES.sermorelin,
   sexualHealth: WORDPRESS_MARKETING_IMAGES.pt141,
 });
+
 
 const MARKETING_NAV_SECTIONS = [
   {
@@ -73,6 +76,14 @@ const MARKETING_NAV_SECTIONS = [
     get links() {
       return this.groups.flatMap((g) => g.links);
     },
+    calculators: [
+      { label: "BMI Calculator", href: "/calculators/bmi" },
+      { label: "BMR Calculator", href: "/calculators/bmr" },
+      { label: "TDEE Calculator", href: "/calculators/tdee" },
+      { label: "Calorie Calculator", href: "/calculators/calorie" },
+      { label: "Protein Calculator", href: "/calculators/protein" },
+      { label: "Daily Carb Calculator", href: "/calculators/carb" },
+    ],
     promo: {
       eyebrow: "Get started",
       headline: "Personalized GLP-1. Lose weight.",
@@ -122,12 +133,10 @@ const MARKETING_NAV_SECTIONS = [
       {
         title: "Healing & Recovery",
         links: [
-          { label: "The Wolverine Protocol", href: "/funnels/sermorelin" },
-          { label: "Advanced Regenerative", href: "/funnels/performance-lab" },
-          {
-            label: "Total Body Reconstruction",
-            href: "/funnels/performance-lab",
-          },
+          { label: "Injury Recovery", href: "/funnels/sermorelin" },
+          { label: "Joint & Ligament Support", href: "/funnels/sermorelin" },
+          { label: "Muscle & Tissue Repair", href: "/funnels/performance-lab" },
+          { label: "Inflammation Support", href: "/funnels/performance-lab" },
         ],
       },
       {
@@ -305,59 +314,42 @@ const MARKETING_NAV_SECTIONS = [
       image: DESKTOP_NAV_PROMO_IMAGES.antiAging,
     },
   },
-  {
-    label: "Gut Health",
-    href: ROUTES.shop,
-    groups: [
-      {
-        title: "Total Gut Reset",
-        links: [
-          { label: "Leaky Gut Repair", href: "/funnels/glutathione-ldn" },
-          { label: "Deep Inflammation Calm", href: "/funnels/glutathione-ldn" },
-          { label: "Stomach Lining Support", href: "/funnels/glutathione-ldn" },
-        ],
-      },
-    ],
-    get links() {
-      return this.groups.flatMap((g) => g.links);
-    },
-    promo: {
-      eyebrow: "Gut care",
-      headline: "Total Gut Reset.",
-      price: "From $129 per month",
-      href: ROUTES.shop,
-      gradient: "from-[#eef6ff] via-[#f5fbff] to-[#f3f3ff]",
-      image: DESKTOP_NAV_PROMO_IMAGES.weightLoss,
-    },
-  },
-];
+  ];
+
 
 function buildLoopingItems(items, minimumCount = 8) {
   if (!Array.isArray(items) || items.length === 0) {
     return [];
   }
 
+
   const repeatCount =
     items.length < minimumCount ? Math.ceil(minimumCount / items.length) : 1;
 
+
   return Array.from({ length: repeatCount }).flatMap(() => items);
 }
+
 
 function useNearViewport(rootMargin = "320px 0px") {
   const elementRef = useRef(null);
   const [isNearViewport, setIsNearViewport] = useState(false);
 
+
   useEffect(() => {
     const element = elementRef.current;
+
 
     if (!element) {
       return undefined;
     }
 
+
     if (typeof IntersectionObserver === "undefined") {
       setIsNearViewport(true);
       return undefined;
     }
+
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -370,15 +362,19 @@ function useNearViewport(rootMargin = "320px 0px") {
       { rootMargin },
     );
 
+
     observer.observe(element);
+
 
     return () => {
       observer.disconnect();
     };
   }, [rootMargin]);
 
+
   return [elementRef, isNearViewport];
 }
+
 
 const MOBILE_EXPLORE_ITEMS = [
   {
@@ -413,6 +409,7 @@ const MOBILE_EXPLORE_ITEMS = [
   },
 ];
 
+
 const MOBILE_TOP_TREATMENTS = [
   {
     title: "NAD",
@@ -444,6 +441,7 @@ const MOBILE_TOP_TREATMENTS = [
   },
 ];
 
+
 const MOBILE_SECTION_TO_NAV_LABEL = Object.freeze({
   "weight-loss-fast": "Weight Loss",
   "power-every-cell": "Longevity",
@@ -451,6 +449,7 @@ const MOBILE_SECTION_TO_NAV_LABEL = Object.freeze({
   "strength-recovery": "Recovery",
   "anti-aging": "Longevity",
 });
+
 
 const MOBILE_CATEGORY_ITEMS = [
   {
@@ -468,8 +467,8 @@ const MOBILE_CATEGORY_ITEMS = [
     promo: MARKETING_NAV_SECTIONS[1].promo,
   },
   {
-    key: "cat-recovery",
-    label: "Recovery",
+    key: "cat-healing-recovery",
+    label: "Healing & Recovery",
     href: ROUTES.strength,
     links: MARKETING_NAV_SECTIONS[2].links,
     promo: MARKETING_NAV_SECTIONS[2].promo,
@@ -480,13 +479,6 @@ const MOBILE_CATEGORY_ITEMS = [
     href: ROUTES.sexualHealth,
     links: MARKETING_NAV_SECTIONS[3].links,
     promo: MARKETING_NAV_SECTIONS[3].promo,
-  },
-  {
-    key: "cat-longevity",
-    label: "Longevity",
-    href: ROUTES.antiAging,
-    links: MARKETING_NAV_SECTIONS[4].links,
-    promo: MARKETING_NAV_SECTIONS[4].promo,
   },
   {
     key: "cat-skin-hair",
@@ -503,13 +495,14 @@ const MOBILE_CATEGORY_ITEMS = [
     promo: MARKETING_NAV_SECTIONS[6].promo,
   },
   {
-    key: "cat-gut-health",
-    label: "Gut Health",
-    href: ROUTES.shop,
-    links: MARKETING_NAV_SECTIONS[7].links,
-    promo: MARKETING_NAV_SECTIONS[7].promo,
+    key: "cat-longevity",
+    label: "Longevity",
+    href: ROUTES.antiAging,
+    links: MARKETING_NAV_SECTIONS[4].links,
+    promo: MARKETING_NAV_SECTIONS[4].promo,
   },
 ];
+
 
 const MARKETING_FOOTER_SECTIONS = Object.freeze([
   {
@@ -552,11 +545,13 @@ const MARKETING_FOOTER_SECTIONS = Object.freeze([
   },
 ]);
 
+
 const MARKETING_FOOTER_PATIENT_CARE = Object.freeze([
   { label: "1-631-800-9294", href: "tel:16318009294" },
   { label: SUPPORT_EMAIL, href: `mailto:${SUPPORT_EMAIL}` },
   { label: "31 Hudson Yards, NY, NY 10001" },
 ]);
+
 
 function MarketingFooterSection({ title, links }) {
   return (
@@ -581,6 +576,7 @@ function MarketingFooterSection({ title, links }) {
     </div>
   );
 }
+
 
 // Convert flat DB navigation items (with nested children) to the MARKETING_NAV_SECTIONS format.
 // Falls back to hardcoded promo/groups for matching section labels.
@@ -609,6 +605,7 @@ function buildNavSectionsFromDb(dbItems) {
   });
 }
 
+
 // Build mobile category items from nav sections (matches the shape of MOBILE_CATEGORY_ITEMS).
 function buildMobileCategoryItemsFromSections(sections) {
   return sections.map((s) => ({
@@ -621,6 +618,7 @@ function buildMobileCategoryItemsFromSections(sections) {
     promo: s.promo,
   }));
 }
+
 
 export function MarketingNavbar() {
   const pathname = usePathname();
@@ -654,6 +652,7 @@ export function MarketingNavbar() {
     ? primaryCta
     : { href: ROUTES.login, label: "Login" };
 
+
   const activeSection =
     navSections.find((section) => section.label === activeMenu) || null;
   const activeMobileSection =
@@ -669,12 +668,14 @@ export function MarketingNavbar() {
   const activeNavCategory =
     mobileCatItems.find((item) => item.key === mobileSection) || null;
 
+
   const openMenu = (label) => {
     if (closeTimeout.current) {
       clearTimeout(closeTimeout.current);
     }
     setActiveMenu(label);
   };
+
 
   const scheduleClose = () => {
     if (closeTimeout.current) {
@@ -683,16 +684,19 @@ export function MarketingNavbar() {
     closeTimeout.current = setTimeout(() => setActiveMenu(null), 140);
   };
 
+
   const cancelClose = () => {
     if (closeTimeout.current) {
       clearTimeout(closeTimeout.current);
     }
   };
 
+
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setMobileSection(null);
   };
+
 
   const openAuthOverlay = (mode, redirectTo = "") => {
     setActiveMenu(null);
@@ -702,16 +706,19 @@ export function MarketingNavbar() {
     setAuthOverlayMode(mode);
   };
 
+
   const closeAuthOverlay = () => {
     setAuthOverlayMode(null);
     setAuthRedirectPath("");
   };
+
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
 
   useEffect(() => {
     const handlePointerDown = (event) => {
@@ -720,11 +727,13 @@ export function MarketingNavbar() {
       const clickedInsideMobilePanel =
         mobilePanelRef.current && mobilePanelRef.current.contains(event.target);
 
+
       if (!clickedInsideHeader && !clickedInsideMobilePanel) {
         setActiveMenu(null);
         setMobileMenuOpen(false);
       }
     };
+
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
@@ -733,8 +742,10 @@ export function MarketingNavbar() {
       }
     };
 
+
     document.addEventListener("mousedown", handlePointerDown);
     window.addEventListener("keydown", handleEscape);
+
 
     return () => {
       document.removeEventListener("mousedown", handlePointerDown);
@@ -745,22 +756,27 @@ export function MarketingNavbar() {
     };
   }, []);
 
+
   useEffect(() => {
     if (!mobileMenuOpen) {
       setMobileSection(null);
       return undefined;
     }
 
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
 
     return () => {
       document.body.style.overflow = previousOverflow;
     };
   }, [mobileMenuOpen]);
 
+
   useEffect(() => {
     let isMounted = true;
+
 
     async function loadAuthProviders() {
       try {
@@ -780,12 +796,15 @@ export function MarketingNavbar() {
       } catch {}
     }
 
+
     loadAuthProviders();
+
 
     return () => {
       isMounted = false;
     };
   }, []);
+
 
   // Load header navigation from DB; fall back to hardcoded if DB has no items
   useEffect(() => {
@@ -810,17 +829,20 @@ export function MarketingNavbar() {
     };
   }, []);
 
+
   useEffect(() => {
     const authMode = searchParams.get("auth");
     if (authMode !== "login" && authMode !== "signup") {
       return;
     }
 
+
     const nextRedirect = normalizeLoginRedirectPath(
       searchParams.get("redirect") || "",
     );
     setAuthRedirectPath(nextRedirect);
     setAuthOverlayMode(authMode);
+
 
     if (typeof window !== "undefined") {
       const nextParams = new URLSearchParams(searchParams.toString());
@@ -831,6 +853,7 @@ export function MarketingNavbar() {
       window.history.replaceState(window.history.state, "", nextUrl);
     }
   }, [pathname, searchParams]);
+
 
   return (
     <>
@@ -862,9 +885,10 @@ export function MarketingNavbar() {
           }`}
         />
 
-        <div className="relative px-4 py-3">
-          <div className="mx-auto max-w-[1340px] px-4 py-2 md:px-8">
-            <div className="flex items-center justify-between gap-3 rounded-[1.7rem]  md:px-5">
+
+        <div className="relative px-0 py-1 md:px-2 md:py-2">
+          <div className="w-full px-1 py-0.5 md:px-3 md:py-0.5">
+            <div className="flex items-center justify-between gap-3 w-full md:rounded-[1.7rem] md:px-5">
               <Link
                 href={ROUTES.home}
                 className="flex shrink-0 items-center"
@@ -883,10 +907,12 @@ export function MarketingNavbar() {
                 />
               </Link>
 
-              <div className="relative hidden xl:block">
+
+              <div className="relative hidden lg:block">
                 <nav className="flex items-center gap-5">
                   {navSections.map((section) => {
                     const isActive = activeMenu === section.label;
+
 
                     return (
                       <Link
@@ -894,7 +920,7 @@ export function MarketingNavbar() {
                         href={section.href}
                         onMouseEnter={() => openMenu(section.label)}
                         onFocus={() => openMenu(section.label)}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-1 py-2 text-[15px] font-semibold tracking-[-0.01em] transition-colors duration-200 ${
+                        className={`inline-flex items-center gap-1.5 rounded-full px-1 py-2 text-[14px] font-normal tracking-[-0.01em] transition-colors duration-200 ${
                           isActive
                             ? "text-[#111827]"
                             : "text-[#4b5565] hover:text-[#111827]"
@@ -907,7 +933,8 @@ export function MarketingNavbar() {
                 </nav>
               </div>
 
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-2 ml-auto">
                 <div className="flex items-center gap-2 sm:hidden">
                   {isAuthenticated ? (
                     <Link
@@ -920,19 +947,20 @@ export function MarketingNavbar() {
                     <button
                       type="button"
                       onClick={() => openAuthOverlay("login")}
-                      className="hs-outline-btn inline-flex min-w-[92px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
+                      className="hs-outline-btn inline-flex min-w-[92px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors shadow-[0_4px_16px_rgba(15,23,42,0.18),0_1px_0_rgba(255,255,255,0.95)_inset,0_0_0_1px_rgba(123,117,240,0.12)] backdrop-blur-md"
                     >
                       <span>{mobileAccountCta.label}</span>
                     </button>
                   )}
                 </div>
 
+
                 <div className="hidden items-center gap-2 sm:flex">
                   {secondaryCta ? (
                     <button
                       type="button"
                       onClick={() => openAuthOverlay("login")}
-                      className="hs-outline-btn inline-flex min-w-[92px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
+                      className="hs-outline-btn inline-flex min-w-[92px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors shadow-[0_4px_16px_rgba(15,23,42,0.18),0_1px_0_rgba(255,255,255,0.95)_inset,0_0_0_1px_rgba(123,117,240,0.12)] backdrop-blur-md"
                     >
                       <span>{secondaryCta.label}</span>
                     </button>
@@ -945,12 +973,13 @@ export function MarketingNavbar() {
                   </Link>
                 </div>
 
+
                 <button
                   type="button"
                   onClick={() =>
                     setMobileMenuOpen((currentValue) => !currentValue)
                   }
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/70 text-[#111827] shadow-[0_2px_8px_rgba(15,23,42,0.10),0_1px_0_rgba(255,255,255,0.9)_inset] backdrop-blur-md transition-all hover:bg-white/90 hover:shadow-[0_4px_14px_rgba(15,23,42,0.14)] xl:hidden"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/70 text-[#111827] shadow-[0_2px_8px_rgba(15,23,42,0.10),0_1px_0_rgba(255,255,255,0.9)_inset] backdrop-blur-md transition-all hover:bg-white/90 hover:shadow-[0_4px_14px_rgba(15,23,42,0.14)] lg:hidden"
                   aria-label="Open navigation menu"
                 >
                   {mobileMenuOpen ? (
@@ -964,6 +993,7 @@ export function MarketingNavbar() {
           </div>
         </div>
 
+
         <div
           className={`absolute inset-x-0 top-full hidden border-t border-white/30 bg-[linear-gradient(160deg,rgba(255,255,255,0.82)_0%,rgba(247,249,255,0.88)_100%)] backdrop-blur-2xl shadow-[0_28px_60px_rgba(15,23,42,0.12),0_1px_0_rgba(255,255,255,0.9)_inset] transition-all duration-200 ease-out xl:block ${
             activeSection
@@ -975,7 +1005,7 @@ export function MarketingNavbar() {
         >
           <div className="mx-auto max-w-[1340px] px-4 py-4 md:px-8">
             <div
-              className={`grid overflow-hidden rounded-[1.55rem] ${dropdownSection.promo ? "md:grid-cols-[1.12fr_0.88fr]" : ""}`}
+              className={`grid overflow-hidden rounded-[1.55rem] ${dropdownSection.calculators ? "md:grid-cols-[1.1fr_0.7fr_0.8fr]" : dropdownSection.promo ? "md:grid-cols-[1.12fr_0.88fr]" : ""}`}
             >
               <div className="px-5 py-5">
                 <div
@@ -1002,6 +1032,28 @@ export function MarketingNavbar() {
                   ))}
                 </div>
               </div>
+
+
+              {dropdownSection.calculators && (
+                <div className="border-t border-[#e8edf4] px-5 py-5 md:border-l md:border-t-0">
+                  <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.26em] text-[#6f63c7]">
+                    Health Calculators
+                  </p>
+                  <div className="space-y-0.5">
+                        {dropdownSection.calculators.map((item) => (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        className="group flex items-center justify-between rounded-[0.9rem] px-3 py-2 text-[14px] font-semibold text-[#111827] transition-colors duration-200 hover:bg-white/85 hover:text-[#5a43d6]"
+                      >
+                        <span>{item.label}</span>
+                        <ChevronRight className="h-4 w-4 text-[#9aa3b2] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#5a43d6]" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
 
               {dropdownSection.promo && (
                 <div className="border-t border-[#e8edf4] px-5 py-5 md:border-l md:border-t-0">
@@ -1038,6 +1090,7 @@ export function MarketingNavbar() {
         </div>
       </header>
 
+
       <div
         className={`fixed inset-0 z-[60] bg-[rgba(17,24,39,0.28)] backdrop-blur-[2px] transition-opacity duration-300 xl:hidden ${
           mobileMenuOpen
@@ -1047,6 +1100,7 @@ export function MarketingNavbar() {
         onClick={closeMobileMenu}
       />
 
+
       <div
         ref={mobilePanelRef}
         className={`fixed bottom-0 right-0 top-0 z-[70] flex w-full max-w-sm flex-col bg-white shadow-[0_30px_80px_rgba(15,23,42,0.24)] transition-transform duration-300 xl:hidden ${
@@ -1054,10 +1108,10 @@ export function MarketingNavbar() {
         }`}
       >
         {/* Close button row */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-4">
+        <div className="flex items-center justify-end px-5 pt-2 pb-2">
           {isAuthenticated ? (
-            <div className="w-full flex items-center justify-between gap-2">
-              <h6>Menu</h6>
+            <div className="w-full flex items-center justify-end gap-2">
+              <h6></h6>
               <Link
                 href={user?.role === "ADMIN" ? "/dashboard" : "/account"}
                 onClick={closeMobileMenu}
@@ -1094,6 +1148,7 @@ export function MarketingNavbar() {
           </button>
         </div>
 
+
         <div className="relative flex-1 overflow-hidden">
           {/* Main panel */}
           <div
@@ -1124,6 +1179,7 @@ export function MarketingNavbar() {
                 </button>
               ))}
             </div>
+
 
             {/* Get Started */}
             <div className="border-t border-gray-200 px-6 pt-6 pb-6">
@@ -1156,6 +1212,7 @@ export function MarketingNavbar() {
               </p>
             </div>
 
+
             {/* Discover HealSend */}
             <div className="border-t border-gray-200 px-6 pt-6 pb-10">
               <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase mb-4">
@@ -1175,6 +1232,7 @@ export function MarketingNavbar() {
               </div>
             </div>
           </div>
+
 
           {/* Sub-panel */}
           <div
@@ -1198,6 +1256,7 @@ export function MarketingNavbar() {
                   </button>
                 </div>
 
+
                 <div className="flex-1 overflow-y-auto">
                   <div className="px-6 pt-5 pb-3">
                     <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase">
@@ -1205,18 +1264,9 @@ export function MarketingNavbar() {
                     </p>
                   </div>
 
+
                   {activeNavCategory.links.length > 0 ? (
                     <>
-                      <Link
-                        href={activeNavCategory.href}
-                        onClick={closeMobileMenu}
-                        className="flex items-center justify-between border-b border-gray-100 px-6 py-4 group"
-                      >
-                        <span className="text-[22px] font-normal text-[#1c1a24] group-hover:text-black transition-colors">
-                          Browse all
-                        </span>
-                        <ChevronRight className="h-5 w-5 text-[#1c1a24]" />
-                      </Link>
                       {activeNavCategory.links.map((link) => (
                         <Link
                           key={link.label}
@@ -1243,6 +1293,7 @@ export function MarketingNavbar() {
                       <ChevronRight className="h-5 w-5 text-[#1c1a24]" />
                     </Link>
                   )}
+
 
                   {activeNavCategory.promo ? (
                     <div className="px-6 pt-6 pb-10">
@@ -1280,6 +1331,7 @@ export function MarketingNavbar() {
         </div>
       </div>
 
+
       {authOverlayMode === "signup" ? (
         <SignupPageClient
           redirectPathOverride={authRedirectPath}
@@ -1290,6 +1342,7 @@ export function MarketingNavbar() {
           overlay
         />
       ) : null}
+
 
       {authOverlayMode === "login" ? (
         <LoginPageClient
@@ -1305,11 +1358,13 @@ export function MarketingNavbar() {
   );
 }
 
+
 export function MarketingFooter() {
   const [openMobileFooterSection, setOpenMobileFooterSection] = useState(null);
   const [footerSections, setFooterSections] = useState(
     MARKETING_FOOTER_SECTIONS,
   );
+
 
   // Load footer navigation from DB; falls back to hardcoded if DB has no items
   useEffect(() => {
@@ -1340,6 +1395,7 @@ export function MarketingFooter() {
     };
   }, []);
 
+
   const mobileSections = [
     ...footerSections,
     {
@@ -1348,12 +1404,14 @@ export function MarketingFooter() {
     },
   ];
 
+
   return (
     <footer className="bg-[#1c1d20] px-4 py-12 text-white md:px-8">
       <div className="mx-auto mb-10 max-w-[1340px] md:hidden">
         <div>
           {mobileSections.map((section) => {
             const isOpen = openMobileFooterSection === section.title;
+
 
             return (
               <div key={section.title} className="overflow-hidden">
@@ -1406,6 +1464,7 @@ export function MarketingFooter() {
         </div>
       </div>
 
+
       <div className="mx-auto mb-12 hidden max-w-[1340px] grid-cols-2 gap-6 md:grid md:grid-cols-5">
         {footerSections.map((section) => (
           <MarketingFooterSection key={section.title} {...section} />
@@ -1445,10 +1504,11 @@ export function MarketingFooter() {
                 alt="LegitScript verification badge"
                 width={160}
                 height={56}
-                className="h-14 w-auto object-contain md:h-12"
+                className="h-24 w-auto object-contain md:h-20"
               />
             </a>
           </div>
+
 
           <div className="order-2 md:order-1">
             <Link
@@ -1466,6 +1526,7 @@ export function MarketingFooter() {
           </div>
         </div>
 
+
         <div className="mt-4 border-t border-gray-800 pt-4 text-center text-xs text-gray-500">
           <p>© 2025 HealSend Inc. All Rights Reserved</p>
         </div>
@@ -1473,6 +1534,7 @@ export function MarketingFooter() {
     </footer>
   );
 }
+
 
 export function MarketingBanner({
   title,
@@ -1490,10 +1552,11 @@ export function MarketingBanner({
   const [sectionRef, shouldLoadMedia] = useNearViewport();
   const shouldRenderMedia = eagerMedia || shouldLoadMedia;
 
+
   return (
     <section
       ref={sectionRef}
-      className="relative my-10 flex min-h-[430px] items-center justify-center overflow-hidden rounded-[24px] border border-black/5 bg-white text-center shadow-[0_22px_60px_rgba(15,23,42,0.08)] sm:min-h-[520px] lg:min-h-[730px]"
+      className="relative mx-3 my-10 flex min-h-[430px] items-center justify-center overflow-hidden rounded-[24px] border border-black/5 bg-white text-center shadow-[0_22px_60px_rgba(15,23,42,0.08)] sm:mx-6 sm:min-h-[520px] lg:mx-10 lg:min-h-[730px]"
     >
       <div className="absolute inset-0 z-0 bg-[#ffffff]" />
       <div className="absolute inset-0 z-0">
@@ -1550,11 +1613,21 @@ export function MarketingBanner({
   );
 }
 
+
 export function MarketingProductCarousel({ products, eagerImages = false }) {
   const [api, setApi] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const isTransitioningRef = useRef(false);
   const releaseTimeoutRef = useRef(null);
-  const carouselProducts = buildLoopingItems(products, 8);
+  const carouselProducts = products;
+
+
+  useEffect(() => {
+    if (api) {
+      api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+    }
+  }, [api]);
+
 
   useEffect(() => {
     return () => {
@@ -1564,15 +1637,18 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
     };
   }, []);
 
+
   const step = (direction) => {
     if (!api || isTransitioningRef.current) {
       return;
     }
 
+
     isTransitioningRef.current = true;
     if (releaseTimeoutRef.current) {
       clearTimeout(releaseTimeoutRef.current);
     }
+
 
     if (direction === "left") {
       api.scrollPrev();
@@ -1580,20 +1656,24 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
       api.scrollNext();
     }
 
+
     releaseTimeoutRef.current = setTimeout(() => {
       isTransitioningRef.current = false;
     }, 420);
   };
 
+
   return (
-    <section className="relative w-full py-8">
+    <section className="relative w-full px-4 py-8 md:px-8 lg:px-12">
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center",
-          containScroll: false,
-          loop: carouselProducts.length > 1,
+          align: "start",
+          containScroll: "keepSnaps",
+          loop: false,
           duration: 32,
+          dragFree: true,
+          watchDrag: true,
         }}
         className="w-full"
       >
@@ -1601,7 +1681,7 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
           {carouselProducts.map((product, productIndex) => (
             <CarouselItem
               key={`${product.title}-${productIndex}`}
-              className="basis-[88%] pl-4 sm:basis-[52%] md:pl-6 lg:basis-[30%] lg:pl-8 xl:basis-[23%]"
+              className="basis-[85%] pl-4 sm:basis-[45%] lg:basis-[28%] xl:basis-[21%]"
             >
               <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
                 <div className="relative flex h-52 items-center justify-center overflow-hidden bg-[#f4f5f9] sm:h-56">
@@ -1609,7 +1689,7 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
                     {product.tags.map((tag) => (
                       <span
                         key={`${product.title}-${tag.label}`}
-                        className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${tag.bg} ${tag.text}`}
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wider ${tag.bg} ${tag.text}`}
                       >
                         {tag.label}
                       </span>
@@ -1625,6 +1705,7 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
                   />
                 </div>
 
+
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
                   <h3 className="mb-2 text-xl font-bold text-[#7b75f0]">
                     {product.title}
@@ -1632,6 +1713,7 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
                   <p className="mb-8 flex-1 text-sm text-gray-600">
                     {product.price}
                   </p>
+
 
                   {product.isAssessment ? (
                     <Link
@@ -1644,13 +1726,13 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
                     <div className="mb-4 flex gap-3">
                       <Link
                         href={product.href}
-                        className="hs-solid-btn flex-1 rounded-full py-3.5 text-center text-sm font-bold transition-colors"
+                        className="hs-solid-btn flex-1 rounded-full py-2.5 text-center text-sm font-bold transition-colors"
                       >
                         Get Started
                       </Link>
                       <Link
                         href={product.secondaryHref || product.href}
-                        className="hs-outline-btn flex-1 rounded-full py-3.5 text-center text-sm font-bold transition-colors"
+                        className="hs-outline-btn flex-1 rounded-full py-2.5 text-center text-sm font-bold transition-colors"
                       >
                         Learn more
                       </Link>
@@ -1666,19 +1748,32 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
         </CarouselContent>
       </Carousel>
 
+
+      <div className="mt-3 flex items-center justify-center gap-1.5 md:hidden">
+        {products.slice(0, 5).map((_, dotIndex) => (
+          <button
+            key={dotIndex}
+            type="button"
+            aria-label={`Go to slide ${dotIndex + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 ${selectedIndex === dotIndex ? "w-4 bg-[#7b75f0]" : "w-2 bg-gray-300"}`}
+          />
+        ))}
+      </div>
+
+
       <div className="mt-4 hidden items-center justify-end gap-4 md:flex">
         <div className="flex gap-2">
           <button
             type="button"
             onClick={() => step("left")}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 transition-all hover:border-gray-400 hover:text-gray-800 disabled:opacity-20 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             type="button"
             onClick={() => step("right")}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7b75f0] text-white transition-colors hover:bg-[#665ce0]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 transition-all hover:border-gray-400 hover:text-gray-800 disabled:opacity-20 disabled:cursor-not-allowed"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -1688,4 +1783,8 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
   );
 }
 
+
 export const MARKETING_ROUTES = ROUTES;
+
+
+
