@@ -27,7 +27,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import {
   normalizeHomepageHeadlinePhrases,
   normalizeHomepageManagedImage,
@@ -606,24 +605,13 @@ function useGuardedCarouselAction(api, delay = 420) {
 
   return React.useCallback(
     (callback) => {
-      if (!api || isTransitioningRef.current) {
+      if (!api) {
         return false;
       }
-
-      isTransitioningRef.current = true;
       callback(api);
-
-      if (releaseTimeoutRef.current) {
-        clearTimeout(releaseTimeoutRef.current);
-      }
-
-      releaseTimeoutRef.current = setTimeout(() => {
-        releaseLock();
-      }, delay);
-
       return true;
     },
-    [api, delay, releaseLock],
+    [api],
   );
 }
 
@@ -1676,13 +1664,13 @@ function SplitFeatures({ section = defaultSplitFeatures }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative flex min-h-[470px] flex-col overflow-hidden rounded-[24px] border border-[#ebe8f5] bg-[#7b68ee] px-8 pb-8 pt-10 text-white shadow-[0_30px_80px_rgba(15,23,42,0.08)] md:min-h-[580px] md:px-10 md:pb-10 md:pt-12"
+          className="relative flex min-h-[400px] flex-col overflow-hidden rounded-[24px] border border-[#ebe8f5] bg-[#7b68ee] px-8 pb-8 pt-10 text-white shadow-[0_30px_80px_rgba(15,23,42,0.08)] md:min-h-[480px] md:px-10 md:pb-10 md:pt-12"
         >
           <div className="relative z-10 mx-auto max-w-[29rem] text-center">
             <h2 className="[font-family:'Roboto',sans-serif] text-center text-[2.7rem] font-semibold leading-[0.96] tracking-[-0.05em] text-white sm:text-[3.35rem] md:text-[45px]">
               {leftCard?.title}
             </h2>
-            <p className="[font-family:'Open_Sans',sans-serif] mx-auto mt-5 max-w-[64%] text-center text-[1rem] leading-8 text-[#efeaff] md:text-[1.05rem]">
+            <p className="[font-family:'Open_Sans',sans-serif] mx-auto mt-5 max-w-[90%] text-center text-[0.9rem] leading-7 text-[#efeaff] md:text-[1.05rem] md:leading-8">
               {leftCard?.description}
             </p>
             <div className="mt-7 flex justify-center">
@@ -1719,7 +1707,7 @@ function SplitFeatures({ section = defaultSplitFeatures }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, delay: 0.06, ease: "easeOut" }}
-          className="relative flex min-h-[470px] flex-col overflow-hidden rounded-[24px] bg-[linear-gradient(140deg,#5b61fe_0%,#6a62f3_45%,#7c74ff_100%)] px-8 pb-8 pt-10 text-left text-white shadow-[0_34px_84px_rgba(95,90,235,0.26)] md:min-h-[580px] md:px-10 md:pb-10 md:pt-12"
+          className="relative flex min-h-[470px] flex-col overflow-hidden rounded-[24px] bg-[linear-gradient(140deg,#5b61fe_0%,#6a62f3_45%,#7c74ff_100%)] px-6 pb-8 pt-10 text-left text-white shadow-[0_34px_84px_rgba(95,90,235,0.26)] md:min-h-[580px] md:px-10 md:pb-10 md:pt-12"
         >
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-55"
@@ -1729,14 +1717,14 @@ function SplitFeatures({ section = defaultSplitFeatures }) {
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.32),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.12),transparent_34%)]" />
 
-          <div className="relative z-10 mx-auto max-w-[15rem] sm:max-w-[17.5rem] md:max-w-[26rem]">
-            <h2 className="[font-family:'Roboto',sans-serif] text-center text-[2.7rem] font-semibold leading-[1.2] tracking-[-0.05em] sm:text-[3.35rem] md:text-[45px]">
+          <div className="relative z-10 w-full px-2">
+            <h2 className="[font-family:'Roboto',sans-serif] text-center text-[2.2rem] font-semibold leading-[1.2] tracking-[-0.05em] sm:text-[3.35rem] md:text-[45px]">
               <span className="md:hidden">{rightTitleMobile}</span>
               <span className="hidden whitespace-pre-line md:inline">
                 {rightTitle}
               </span>
             </h2>
-            <p className="[font-family:'Open_Sans',sans-serif] mx-auto mt-5 max-w-[15rem] text-center text-[1rem] leading-8 text-white/88 sm:max-w-[17rem] md:max-w-[70%] md:text-[1.05rem]">
+            <p className="[font-family:'Open_Sans',sans-serif] mx-auto mt-5 w-full text-center text-[1rem] leading-8 text-white/88 md:max-w-[70%] md:text-[1.05rem]">
               {
                 rightCard?.description?.split(
                   "helping you feel happy in your body.",
@@ -1841,7 +1829,7 @@ function ArticleCarousel({ section = defaultArticleCarousel }) {
             }}
             className="w-full"
           >
-            <CarouselContent className="-ml-4 items-stretch md:-ml-6">
+            <CarouselContent className="ml-0 items-stretch">
               {items.map((item, itemIndex) => {
                 const slideState = getSlideState(itemIndex);
                 const isActive = slideState === "active";
@@ -1849,7 +1837,7 @@ function ArticleCarousel({ section = defaultArticleCarousel }) {
                 return (
                   <CarouselItem
                     key={`${item.title}-${itemIndex}`}
-                    className="basis-[80%] pl-4 sm:basis-[90%] md:basis-[86%] xl:basis-[80%]"
+                    className="basis-[90%] pl-4 sm:basis-[90%] md:basis-[33%] xl:basis-[31%]"
                   >
                     <article
                       className={`relative h-[460px] overflow-hidden rounded-[2rem] shadow-[0_20px_60px_rgba(15,23,42,0.14)] transition-all duration-500 ease-out md:h-[620px] ${
@@ -1921,7 +1909,7 @@ function ArticleCarousel({ section = defaultArticleCarousel }) {
           <button
             type="button"
             onClick={goToPrevious}
-            className="absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-black/42 text-white backdrop-blur-md transition-colors hover:bg-black/56 md:flex md:left-6 lg:left-8"
+            className={`absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border transition-colors md:flex md:left-6 lg:left-8 ${index === 0 ? "border-white/20 bg-black/20 text-white/30 cursor-not-allowed" : "border-white/35 bg-black/42 text-white backdrop-blur-md hover:bg-black/56"}`}
             aria-label="Previous article"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -1930,7 +1918,7 @@ function ArticleCarousel({ section = defaultArticleCarousel }) {
           <button
             type="button"
             onClick={goToNext}
-            className="absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-black/42 text-white backdrop-blur-md transition-colors hover:bg-black/56 md:flex md:right-6 lg:right-8"
+            className={`absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border transition-colors md:flex md:right-6 lg:right-8 ${index >= items.length - 1 ? "border-white/20 bg-black/20 text-white/30 cursor-not-allowed" : "border-white/35 bg-black/42 text-white backdrop-blur-md hover:bg-black/56"}`}
             aria-label="Next article"
           >
             <ChevronRight className="h-5 w-5" />
@@ -1967,7 +1955,7 @@ function CategoryGrid({ section = defaultCategoryGrid }) {
         }}
         className="w-full"
       >
-        <CarouselContent className="-ml-4 items-stretch md:-ml-6">
+        <CarouselContent className="ml-0 items-stretch">
           {categories.map((cat, catIndex) => (
             <CarouselItem
               key={`${cat.title || "category"}-${cat.href || catIndex}-${catIndex}`}
@@ -2027,15 +2015,24 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
   const carouselPosts = posts;
   const [api, setApi] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
   const runCarouselAction = useGuardedCarouselAction(api, 430);
 
   useEffect(() => {
     if (!api) return;
-    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+    const update = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    };
+    api.on("select", update);
+    api.on("scroll", update);
+    update();
   }, [api]);
 
   return (
-    <section className="bg-white px-4 pb-32 pt-20 md:px-8 md:pb-36 md:pt-24 lg:px-12">
+    <section className="bg-white px-4 pb-32 pt-20 md:px-6 md:pb-36 md:pt-24 lg:px-8">
       <div className="mx-auto mb-12 max-w-3xl px-4 text-center md:px-6 lg:px-8">
         <h2 className="[font-family:'Poppins',sans-serif] mb-4 text-3xl font-semibold tracking-[-0.04em] text-black md:text-5xl">
           {section.title || defaultBlogCarousel.title}
@@ -2049,21 +2046,18 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
         setApi={setApi}
         opts={{
           align: "start",
-          containScroll: "keepSnaps",
+          containScroll: "trimSnaps",
           loop: false,
           duration: 38,
-          dragFree: true,
-          skipSnaps: true,
         }}
-        plugins={[WheelGesturesPlugin()]}
         className="w-full"
         style={{ cursor: "grab" }}
       >
-        <CarouselContent className="-ml-4 items-stretch md:-ml-6">
+        <CarouselContent className="ml-0 items-stretch">
           {carouselPosts.map((post, postIndex) => (
             <CarouselItem
               key={`${post.title}-${postIndex}`}
-              className="box-border basis-[88%] pl-4 sm:basis-[52%] md:basis-[48%] xl:basis-[29.5%] 2xl:basis-[28.5%]"
+              className="box-border basis-[88%] pl-4 sm:basis-[52%] md:basis-[31%] xl:basis-[22%] 2xl:basis-[21%]"
             >
               <article className="flex h-full min-h-[440px] min-w-0 flex-col overflow-hidden rounded-[20px] border border-[#dfe3ef] bg-white shadow-[0_14px_30px_rgba(15,23,42,0.06)] md:min-h-[470px]">
                 <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#e8ecfb]">
@@ -2136,7 +2130,7 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollPrev())
             }
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex === 0 ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${!canScrollPrev ? "border-gray-100 bg-white text-gray-300 cursor-not-allowed opacity-40" : "border-gray-300 bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -2145,7 +2139,7 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollNext())
             }
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex >= (carouselPosts.length - 1) ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${!canScrollNext ? "border-gray-100 bg-white text-gray-300 cursor-not-allowed opacity-40" : "border-gray-300 bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -2161,11 +2155,20 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
     : defaultMemberStoriesSection.stories;
   const [api, setApi] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
   const runCarouselAction = useGuardedCarouselAction(api, 430);
 
   useEffect(() => {
     if (!api) return;
-    api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+    const update = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    };
+    api.on("select", update);
+    api.on("scroll", update);
+    update();
   }, [api]);
 
   return (
@@ -2183,7 +2186,7 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollPrev())
             }
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex === 0 ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${!canScrollPrev ? "border-gray-100 bg-white text-gray-300 cursor-not-allowed opacity-40" : "border-gray-300 bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -2192,7 +2195,7 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
             onClick={() =>
               runCarouselAction((carouselApi) => carouselApi.scrollNext())
             }
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${selectedIndex >= (stories.length - 1) ? "border-gray-200 bg-white text-gray-300 cursor-not-allowed" : "border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"}`}
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${!canScrollNext ? "border-gray-100 bg-white text-gray-300 cursor-not-allowed opacity-40" : "border-gray-300 bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -2203,21 +2206,18 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
         setApi={setApi}
         opts={{
           align: "start",
-          containScroll: "keepSnaps",
+          containScroll: "trimSnaps",
           loop: false,
           duration: 38,
-          dragFree: true,
-          skipSnaps: true,
         }}
-        plugins={[WheelGesturesPlugin()]}
         className="w-full"
         style={{ cursor: "grab" }}
       >
-        <CarouselContent className="-ml-4 items-stretch md:-ml-6">
+        <CarouselContent className="ml-0 items-stretch">
           {stories.map((story, storyIndex) => (
             <CarouselItem
               key={`${story.name}-${storyIndex}`}
-              className="basis-[72%] pl-4 sm:basis-[54%] xl:basis-[29.5%] 2xl:basis-[28.5%]"
+              className="basis-[78%] pl-4 sm:basis-[54%] md:basis-[33%] xl:basis-[31%] 2xl:basis-[30%]"
               
             >
               <motion.article

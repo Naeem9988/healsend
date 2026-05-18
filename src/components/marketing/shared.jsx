@@ -887,8 +887,8 @@ export function MarketingNavbar() {
 
 
         <div className="relative px-0 py-1 md:px-2 md:py-2">
-          <div className="w-full px-1 py-0.5 md:px-3 md:py-0.5">
-            <div className="flex items-center justify-between gap-3 w-full md:rounded-[1.7rem] md:px-5">
+          <div className="w-full px-1 py-0.5 md:px-0 md:py-0.5">
+            <div className="flex items-center justify-between gap-3 w-full md:rounded-[1.7rem] md:px-2">
               <Link
                 href={ROUTES.home}
                 className="flex shrink-0 items-center"
@@ -908,7 +908,7 @@ export function MarketingNavbar() {
               </Link>
 
 
-              <div className="relative hidden lg:block">
+              <div className="relative hidden lg:flex flex-1 items-center justify-center">
                 <nav className="flex items-center gap-5">
                   {navSections.map((section) => {
                     const isActive = activeMenu === section.label;
@@ -995,7 +995,7 @@ export function MarketingNavbar() {
 
 
         <div
-          className={`absolute inset-x-0 top-full hidden border-t border-white/30 bg-[linear-gradient(160deg,rgba(255,255,255,0.82)_0%,rgba(247,249,255,0.88)_100%)] backdrop-blur-2xl shadow-[0_28px_60px_rgba(15,23,42,0.12),0_1px_0_rgba(255,255,255,0.9)_inset] transition-all duration-200 ease-out xl:block ${
+          className={`absolute inset-x-0 top-full hidden border-t border-white/30 bg-[linear-gradient(160deg,rgba(255,255,255,0.82)_0%,rgba(247,249,255,0.88)_100%)] backdrop-blur-2xl shadow-[0_28px_60px_rgba(15,23,42,0.12),0_1px_0_rgba(255,255,255,0.9)_inset] transition-all duration-200 ease-out lg:block lg:flex ${
             activeSection
               ? "visible translate-y-0"
               : "pointer-events-none invisible -translate-y-2"
@@ -1108,44 +1108,27 @@ export function MarketingNavbar() {
         }`}
       >
         {/* Close button row */}
-        <div className="flex items-center justify-end px-5 pt-2 pb-2">
-          {isAuthenticated ? (
-            <div className="w-full flex items-center justify-end gap-2">
-              <h6></h6>
+       <div className={`flex items-center justify-between px-5 pt-3 pb-2 ${activeNavCategory ? "hidden" : ""}`}>
+          <h6 className="text-[15px] font-semibold text-[#1c1a24]">Menu</h6>
+          <div className="flex items-center gap-1">
+            {isAuthenticated ? (
               <Link
                 href={user?.role === "ADMIN" ? "/dashboard" : "/account"}
                 onClick={closeMobileMenu}
-                className="flex items-center gap-2 rounded-full  px-3 py-1.5 text-md font-semibold text-[#1c1a24] hover:bg-[#eef0fa] transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[#eef0fa] transition-colors"
               >
-                <User2 className="h-6 w-6 text-[#5d62f3] " />
-                {/* <span className="max-w-[120px] truncate">
-                  {user?.email ?? "Account"}
-                </span> */}
+                <User2 className="h-5 w-5 text-[#5d62f3]" />
               </Link>
-              {/* <button
-                type="button"
-                onClick={() => {
-                  logout();
-                  closeMobileMenu();
-                }}
-                className="flex items-center gap-1.5 rounded-full border border-[#e8edf5] bg-[#f5f7fd] px-3 py-1.5 text-sm font-semibold text-[#e05252] hover:bg-[#fff0f0] transition-colors"
-                aria-label="Log out"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
-              </button> */}
-            </div>
-          ) : (
-            <div />
-          )}
-          <button
-            type="button"
-            onClick={closeMobileMenu}
-            aria-label="Close navigation menu"
-            className="flex h-9 w-9 items-center justify-center text-[#1c1a24]"
-          >
-            <X className="h-6 w-6" />
-          </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={closeMobileMenu}
+              aria-label="Close navigation menu"
+              className="flex h-9 w-9 items-center justify-center text-[#1c1a24]"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
         </div>
 
 
@@ -1245,14 +1228,20 @@ export function MarketingNavbar() {
             {activeNavCategory ? (
               <div className="flex flex-col h-full">
                 {/* Sub-panel header */}
-                <div className="flex items-center px-5 pt-5 pb-4 border-b border-gray-100">
+                <div className="flex items-center justify-between px-5 pt-3 pb-2 border-b border-gray-100">
                   <button
                     type="button"
                     onClick={() => setMobileSection(null)}
                     className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1c1a24]"
                   >
                     <ChevronLeft className="h-4 w-4" />
-                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={closeMobileMenu}
+                    className="flex h-9 w-9 items-center justify-center text-[#1c1a24]"
+                  >
+                    <X className="h-6 w-6" />
                   </button>
                 </div>
 
@@ -1556,7 +1545,7 @@ export function MarketingBanner({
   return (
     <section
       ref={sectionRef}
-      className="relative mx-3 my-10 flex min-h-[430px] items-center justify-center overflow-hidden rounded-[24px] border border-black/5 bg-white text-center shadow-[0_22px_60px_rgba(15,23,42,0.08)] sm:mx-6 sm:min-h-[520px] lg:mx-10 lg:min-h-[730px]"
+      className="relative mx-3 my-10 flex min-h-[380px] items-center justify-center overflow-hidden rounded-[24px] border border-black/5 bg-white text-center shadow-[0_22px_60px_rgba(15,23,42,0.08)] sm:mx-6 sm:min-h-[420px] lg:mx-10 lg:min-h-[500px]"
     >
       <div className="absolute inset-0 z-0 bg-[#ffffff]" />
       <div className="absolute inset-0 z-0">
@@ -1617,6 +1606,8 @@ export function MarketingBanner({
 export function MarketingProductCarousel({ products, eagerImages = false }) {
   const [api, setApi] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
   const isTransitioningRef = useRef(false);
   const releaseTimeoutRef = useRef(null);
   const carouselProducts = products;
@@ -1624,7 +1615,14 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
 
   useEffect(() => {
     if (api) {
-      api.on("select", () => setSelectedIndex(api.selectedScrollSnap()));
+      const update = () => {
+        setSelectedIndex(api.selectedScrollSnap());
+        setCanScrollPrev(api.canScrollPrev());
+        setCanScrollNext(api.canScrollNext());
+      };
+      api.on("select", update);
+      api.on("scroll", update);
+      update();
     }
   }, [api]);
 
@@ -1639,27 +1637,12 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
 
 
   const step = (direction) => {
-    if (!api || isTransitioningRef.current) {
-      return;
-    }
-
-
-    isTransitioningRef.current = true;
-    if (releaseTimeoutRef.current) {
-      clearTimeout(releaseTimeoutRef.current);
-    }
-
-
+    if (!api) return;
     if (direction === "left") {
       api.scrollPrev();
     } else {
       api.scrollNext();
     }
-
-
-    releaseTimeoutRef.current = setTimeout(() => {
-      isTransitioningRef.current = false;
-    }, 420);
   };
 
 
@@ -1669,15 +1652,13 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
         setApi={setApi}
         opts={{
           align: "start",
-          containScroll: "keepSnaps",
+          containScroll: "trimSnaps",
           loop: false,
           duration: 32,
-          dragFree: true,
-          watchDrag: true,
         }}
         className="w-full"
       >
-        <CarouselContent className="-ml-4 items-stretch md:-ml-6 lg:-ml-8">
+        <CarouselContent className="ml-0 items-stretch">
           {carouselProducts.map((product, productIndex) => (
             <CarouselItem
               key={`${product.title}-${productIndex}`}
@@ -1766,14 +1747,14 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
           <button
             type="button"
             onClick={() => step("left")}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 transition-all hover:border-gray-400 hover:text-gray-800 disabled:opacity-20 disabled:cursor-not-allowed"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${!canScrollPrev ? "border-gray-100 bg-white text-gray-300 cursor-not-allowed opacity-40" : "border-gray-300 bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             type="button"
             onClick={() => step("right")}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-400 transition-all hover:border-gray-400 hover:text-gray-800 disabled:opacity-20 disabled:cursor-not-allowed"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${!canScrollNext ? "border-gray-100 bg-white text-gray-300 cursor-not-allowed opacity-40" : "border-gray-300 bg-gray-200 text-gray-800 hover:bg-gray-300"}`}
           >
             <ChevronRight className="h-5 w-5" />
           </button>
