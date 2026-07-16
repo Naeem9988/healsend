@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
@@ -412,28 +413,28 @@ const MOBILE_EXPLORE_ITEMS = [
 
 const MOBILE_TOP_TREATMENTS = [
   {
-    title: "NAD",
-    href: ROUTES.nad,
-    image: WORDPRESS_MARKETING_IMAGES.nadInjection,
-    primaryBadge: "Cellular",
-    secondaryBadge: "Rx",
-  },
-  {
-    title: "PT-141",
-    href: "/pt-141-nasal-spray",
-    image: WORDPRESS_MARKETING_IMAGES.pt141,
-    primaryBadge: "Popular",
-    secondaryBadge: "Rx",
-  },
-  {
-    title: "Tirzepatide",
+    title: "Tirzepatide Injection",
     href: "/tirzepatide-injections",
     image: WORDPRESS_MARKETING_IMAGES.tirzepatide,
     primaryBadge: "GLP-1",
     secondaryBadge: "Rx",
   },
   {
-    title: "Sermorelin",
+    title: "NAD+ Injection",
+    href: "/nad-injections",
+    image: WORDPRESS_MARKETING_IMAGES.nadInjection,
+    primaryBadge: "Cellular",
+    secondaryBadge: "Rx",
+  },
+  {
+    title: "PT-141 Nasal Spray",
+    href: "/pt-141-nasal-spray",
+    image: WORDPRESS_MARKETING_IMAGES.pt141,
+    primaryBadge: "Popular",
+    secondaryBadge: "Rx",
+  },
+  {
+    title: "Sermorelin Injection",
     href: "/sermorelin-injection-2",
     image: WORDPRESS_MARKETING_IMAGES.sermorelin,
     primaryBadge: "Recovery",
@@ -619,6 +620,63 @@ function buildMobileCategoryItemsFromSections(sections) {
   }));
 }
 
+
+const MARKETING_ANNOUNCEMENTS = Object.freeze([
+  {
+    text: "Free expedited shipping on all orders",
+    href: ROUTES.shop,
+  },
+  {
+    text: "FSA & HSA eligible with all plans",
+    href: ROUTES.shop,
+  },
+  {
+    text: "Personalized care from licensed providers",
+    href: ROUTES.home,
+  },
+]);
+
+function MarketingAnnouncementBar() {
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setAnnouncementIndex(
+        (currentIndex) =>
+          (currentIndex + 1) % MARKETING_ANNOUNCEMENTS.length,
+      );
+    }, 4200);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  const activeAnnouncement =
+    MARKETING_ANNOUNCEMENTS[announcementIndex] ||
+    MARKETING_ANNOUNCEMENTS[0];
+
+  return (
+    <div className="relative z-20 flex h-10 w-full items-center justify-center overflow-hidden border-b border-[#e0c84f] !bg-[#fff3a3] px-4 sm:h-11">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={activeAnnouncement.text}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="absolute inset-0 flex items-center justify-center px-4"
+        >
+          <Link
+            href={activeAnnouncement.href}
+            className="block w-full truncate py-1 text-center text-[12px] font-medium leading-[1.35] tracking-[-0.01em] text-[#171717] transition-opacity hover:opacity-75 sm:text-[14px]"
+            aria-live="polite"
+          >
+            {activeAnnouncement.text}
+          </Link>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function MarketingNavbar() {
   const pathname = usePathname();
@@ -862,6 +920,7 @@ export function MarketingNavbar() {
         className="sticky top-0 z-50"
         onMouseLeave={scheduleClose}
       >
+        <MarketingAnnouncementBar />
         {/* Glass fill — always visible, stronger on scroll */}
         <div
           className={`absolute inset-0 transition-all duration-300 ${
@@ -1003,7 +1062,7 @@ export function MarketingNavbar() {
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
-          <div className="mx-auto max-w-[1340px] px-4 py-4 md:px-8">
+          <div className="mx-auto w-full max-w-[1340px] px-4 py-4 md:px-8">
             <div
               className={`grid overflow-hidden rounded-[1.55rem] ${dropdownSection.calculators ? "md:grid-cols-[1.1fr_0.7fr_0.8fr]" : dropdownSection.promo ? "md:grid-cols-[1.12fr_0.88fr]" : ""}`}
             >
@@ -1112,14 +1171,24 @@ export function MarketingNavbar() {
           <h6 className="text-[15px] font-semibold text-[#1c1a24]">Menu</h6>
           <div className="flex items-center gap-1">
             {isAuthenticated ? (
-              <Link
-                href={user?.role === "ADMIN" ? "/dashboard" : "/account"}
-                onClick={closeMobileMenu}
-                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[#eef0fa] transition-colors"
-              >
-                <User2 className="h-5 w-5 text-[#5d62f3]" />
-              </Link>
-            ) : null}
+  <Link
+    href={user?.role === "ADMIN" ? "/dashboard" : "/account"}
+    onClick={closeMobileMenu}
+    aria-label="Open account"
+    className="flex h-9 w-9 items-center justify-center rounded-full text-[#1c1a24] transition-colors hover:bg-[#eef0fa]"
+  >
+    <User2 className="h-5 w-5" />
+  </Link>
+) : (
+  <button
+    type="button"
+    onClick={() => openAuthOverlay("login")}
+    aria-label="Log in to your account"
+    className="flex h-9 w-9 items-center justify-center rounded-full text-[#1c1a24] transition-colors hover:bg-[#eef0fa]"
+  >
+    <User2 className="h-5 w-5" />
+  </button>
+)}
             <button
               type="button"
               onClick={closeMobileMenu}
@@ -1164,6 +1233,55 @@ export function MarketingNavbar() {
             </div>
 
 
+            <section
+              aria-label="Top treatments"
+              className="border-t border-[#ececf1] bg-white px-0 pb-5 pt-5"
+            >
+              <div className="mb-3 flex items-center justify-between px-5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#75757d]">
+                  Top Treatments
+                </p>
+                <span className="text-[10px] font-medium text-[#9a9aa2]">
+                  Swipe to explore
+                </span>
+              </div>
+
+              <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-5 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {MOBILE_TOP_TREATMENTS.map((treatment) => (
+                  <Link
+                    key={treatment.title}
+                    href={treatment.href}
+                    onClick={closeMobileMenu}
+                    className="group relative h-[248px] w-[166px] shrink-0 snap-start overflow-hidden rounded-[1.35rem] bg-[#f1f1f2] shadow-[0_1px_0_rgba(15,23,42,0.05)] transition-transform duration-200 active:scale-[0.98]"
+                  >
+                    <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
+                      <span className="rounded-full bg-white/95 px-2 py-1 text-[10px] font-semibold text-[#535762] shadow-sm">
+                        {treatment.primaryBadge}
+                      </span>
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-[11px] font-medium text-[#535762] shadow-sm">
+                        {treatment.secondaryBadge}
+                      </span>
+                    </div>
+
+                    <div className="absolute inset-x-3 bottom-[52px] top-10">
+                      <Image
+                        src={treatment.image}
+                        alt={treatment.title}
+                        fill
+                        sizes="166px"
+                        className="object-contain p-3 transition-transform duration-300 group-hover:scale-[1.04]"
+                      />
+                    </div>
+
+                    <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-2">
+                      <h4 className="text-[15px] font-semibold leading-[1.08] tracking-[-0.025em] text-[#111318]">
+                        {treatment.title}
+                      </h4>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
             {/* Get Started */}
             <div className="border-t border-gray-200 px-6 pt-6 pb-6">
               <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase mb-4">
@@ -1228,22 +1346,48 @@ export function MarketingNavbar() {
             {activeNavCategory ? (
               <div className="flex flex-col h-full">
                 {/* Sub-panel header */}
-                <div className="flex items-center justify-between px-5 pt-3 pb-2 border-b border-gray-100">
-                  <button
-                    type="button"
-                    onClick={() => setMobileSection(null)}
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1c1a24]"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={closeMobileMenu}
-                    className="flex h-9 w-9 items-center justify-center text-[#1c1a24]"
-                  >
-                    <X className="h-6 w-6" />
-                  </button>
-                </div>
+
+                <div className="flex items-center justify-between border-b border-gray-100 px-5 pb-2 pt-3">
+  <button
+    type="button"
+    onClick={() => setMobileSection(null)}
+    aria-label="Back to menu"
+    className="inline-flex h-9 w-9 items-center justify-center text-[#1c1a24]"
+  >
+    <ChevronLeft className="h-4 w-4" />
+  </button>
+
+  <div className="flex items-center gap-1">
+    {isAuthenticated ? (
+      <Link
+        href={user?.role === "ADMIN" ? "/dashboard" : "/account"}
+        onClick={closeMobileMenu}
+        aria-label="Open account"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-[#1c1a24] transition-colors hover:bg-[#eef0fa]"
+      >
+        <User2 className="h-5 w-5" />
+      </Link>
+    ) : (
+      <button
+        type="button"
+        onClick={() => openAuthOverlay("login")}
+        aria-label="Log in to your account"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-[#1c1a24] transition-colors hover:bg-[#eef0fa]"
+      >
+        <User2 className="h-5 w-5" />
+      </button>
+    )}
+
+    <button
+      type="button"
+      onClick={closeMobileMenu}
+      aria-label="Close navigation menu"
+      className="flex h-9 w-9 items-center justify-center text-[#1c1a24]"
+    >
+      <X className="h-6 w-6" />
+    </button>
+  </div>
+</div>
 
 
                 <div className="flex-1 overflow-y-auto">
@@ -1545,7 +1689,7 @@ export function MarketingBanner({
   return (
     <section
       ref={sectionRef}
-      className="relative mx-3 my-10 flex min-h-[380px] items-center justify-center overflow-hidden rounded-[24px] border border-black/5 bg-white text-center shadow-[0_22px_60px_rgba(15,23,42,0.08)] sm:mx-6 sm:min-h-[420px] lg:mx-10 lg:min-h-[500px]"
+      className="relative mx-3 my-3 flex min-h-[380px] items-center justify-center overflow-hidden rounded-[24px] border border-black/5 bg-white text-center shadow-[0_22px_60px_rgba(15,23,42,0.08)] sm:mx-6 sm:min-h-[420px] lg:mx-10 lg:min-h-[500px]"
     >
       <div className="absolute inset-0 z-0 bg-[#ffffff]" />
       <div className="absolute inset-0 z-0">
@@ -1647,7 +1791,7 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
 
 
   return (
-    <section className="relative w-full px-4 py-8 md:px-8 lg:px-12">
+    <section className="relative w-full px-4 py-6 md:px-8 lg:px-12">
       <Carousel
         setApi={setApi}
         opts={{

@@ -229,7 +229,7 @@ const defaultHeroContent = {
         "bg-[radial-gradient(circle_at_center,#37c773_0%,#24ad62_44%,#149353_74%,#0c8c52_100%)]",
       artClass: "scale-[0.96] translate-x-1 sm:scale-[1.0]",
     },
-  
+
     {
       title: "NAD+\nInjections",
       image: BUNDLE_MARKETING_IMAGES.nadInjections,
@@ -1276,10 +1276,68 @@ function NegativeSellSection() {
   );
 }
 
+function MobileRotatingHeadline({ hero = defaultHeroContent }) {
+  const [index, setIndex] = useState(0);
+
+  const headlinePhrases =
+    hero.headlinePhrases?.length > 0
+      ? hero.headlinePhrases
+      : defaultHeroContent.headlinePhrases;
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setIndex(
+        (currentIndex) => (currentIndex + 1) % headlinePhrases.length,
+      );
+    }, 5600);
+
+    return () => window.clearInterval(intervalId);
+  }, [headlinePhrases.length]);
+
+  const activeHeadline =
+    headlinePhrases[index] || defaultHeroContent.headlinePhrases[0];
+
+  const activeText =
+    typeof activeHeadline === "string"
+      ? activeHeadline
+      : activeHeadline.text;
+
+  const activeColor =
+    typeof activeHeadline === "string"
+      ? defaultHeroContent.headlinePhrases.find(
+          (phrase) => phrase.text === activeHeadline,
+        )?.color || "#7B75F0"
+      : activeHeadline.color || "#7B75F0";
+
+  return (
+    <section className="bg-white px-3 pb-2 pt-4">
+      <div className="relative min-h-[3.1rem] overflow-hidden">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.h1
+            key={activeText}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -18 }}
+            transition={{ duration: 0.42, ease: "easeOut" }}
+            className="[font-family:'Poppins',sans-serif] absolute inset-x-0 top-0 text-[2.45rem] font-semibold leading-[0.98] tracking-[-0.055em] max-[359px]:text-[2.15rem]"
+            style={{ color: activeColor }}
+          >
+            {activeText}
+          </motion.h1>
+        </AnimatePresence>
+      </div>
+
+      <h2 className="[font-family:'Poppins',sans-serif] mt-1 text-[2.35rem] font-semibold leading-[1] tracking-[-0.055em] text-[#1d1d1f] max-[359px]:text-[2.05rem]">
+        {hero.titleLineTwo || defaultHeroContent.titleLineTwo}
+      </h2>
+    </section>
+  );
+}
+
 function HimsTopSection() {
   return (
     <section className="bg-white">
-      <div className="px-3 pt-3 pb-4">
+      <div className="px-1.5 pt-3 pb-4">
         {/* Two featured dark cards */}
         <div className="mb-2.5 grid grid-cols-2 gap-2">
           {/* Left card – Weight Loss */}
@@ -1658,7 +1716,7 @@ function SplitFeatures({ section = defaultSplitFeatures }) {
   const rightTitleMobile = rightTitle.replace(/\s*\n\s*/g, " ");
 
   return (
-    <section className="mx-auto px-4 py-12 md:px-8 md:py-16">
+    <section className="mx-auto px-4 py-3 md:px-8 md:py-16">
       <div className="grid gap-4 lg:grid-cols-2">
         <motion.article
           whileInView={{ opacity: 1, y: 0 }}
@@ -2032,7 +2090,7 @@ function BlogCarousel({ section = defaultBlogCarousel }) {
   }, [api]);
 
   return (
-    <section className="bg-white px-4 pb-32 pt-20 md:px-6 md:pb-36 md:pt-24 lg:px-8">
+    <section className="bg-white px-4 pb-32 pt-8 md:px-6 md:pb-36 md:pt-24 lg:px-8">
       <div className="mx-auto mb-12 max-w-3xl px-4 text-center md:px-6 lg:px-8">
         <h2 className="[font-family:'Poppins',sans-serif] mb-4 text-3xl font-semibold tracking-[-0.04em] text-black md:text-5xl">
           {section.title || defaultBlogCarousel.title}
@@ -2218,7 +2276,7 @@ function MemberStoriesSection({ section = defaultMemberStoriesSection }) {
             <CarouselItem
               key={`${story.name}-${storyIndex}`}
               className="basis-[78%] pl-4 sm:basis-[54%] md:basis-[33%] xl:basis-[31%] 2xl:basis-[30%]"
-              
+
             >
               <motion.article
                 initial={{ opacity: 0, y: 18 }}
@@ -2337,13 +2395,17 @@ export default function MarketingHomePage({
     <div className="min-h-screen bg-white font-sans selection:bg-[#7b75f0] selection:text-white">
       <MarketingNavbar />
       <div className="overflow-x-hidden">
-        {/* Mobile: Hims-style layout. Desktop (md+): original HeroCategories grid. */}
-        <div className="md:hidden">
-          <HimsTopSection />
-        </div>
-        <div className="hidden md:block">
-          <HeroCategories hero={activeHero} />
-        </div>
+
+        {/* Mobile: rotating heading + compact black-card layout */}
+<div className="md:hidden">
+  <MobileRotatingHeadline hero={activeHero} />
+  <HimsTopSection />
+</div>
+
+{/* Tablet and desktop: full rotating hero grid */}
+<div className="hidden md:block">
+  <HeroCategories hero={activeHero} />
+</div>
 
      {/* <NegativeSellSection /> */}
 
