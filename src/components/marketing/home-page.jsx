@@ -1411,7 +1411,7 @@ function HimsTopSection() {
         </div>
 
         {/* Category rows */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <Link
             href={MARKETING_ROUTES.sexualHealth}
             className="flex items-center justify-between overflow-hidden rounded-[14px] bg-[#f7f5ff] px-4 py-3.5"
@@ -2390,6 +2390,7 @@ export default function MarketingHomePage({
   const energyBanner = activeBanners[2] || defaultHomeBanners[2];
   const strengthBanner = activeBanners[3] || defaultHomeBanners[3];
   const showDeferredHomeSections = false;
+  const showEditorialSections = false;
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-[#7b75f0] selection:text-white">
@@ -2421,10 +2422,14 @@ export default function MarketingHomePage({
         <MarketingBanner {...energyBanner} eagerMedia />
         <MarketingProductCarousel products={energyCarousel} eagerImages />
         <SplitFeatures section={activeSplitFeatures} />
-        <ArticleCarousel section={activeArticleCarousel} />
+        {showEditorialSections ? (
+          <ArticleCarousel section={activeArticleCarousel} />
+        ) : null}
         {/* <CategoryGrid section={activeCategoryGrid} /> */}
         <MemberStoriesSection section={activeMemberStoriesSection} />
-        <BlogCarousel section={activeBlogCarousel} />
+        {showEditorialSections ? (
+          <BlogCarousel section={activeBlogCarousel} />
+        ) : null}
 
         {showDeferredHomeSections ? (
           <>

@@ -929,8 +929,6 @@ export function MarketingNavbar() {
               : "bg-white/90 backdrop-blur-xl"
           }`}
         />
-        {/* Top specular highlight */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/90 to-transparent" />
         {/* Bottom border */}
         <div
           className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent transition-opacity duration-300 ${
@@ -1004,10 +1002,11 @@ export function MarketingNavbar() {
                     </Link>
                   ) : (
                     <button
-                      type="button"
-                      onClick={() => openAuthOverlay("login")}
-                      className="hs-outline-btn inline-flex min-w-[92px] items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors shadow-[0_4px_16px_rgba(15,23,42,0.18),0_1px_0_rgba(255,255,255,0.95)_inset,0_0_0_1px_rgba(123,117,240,0.12)] backdrop-blur-md"
-                    >
+  type="button"
+  onClick={() => openAuthOverlay("login")}
+  className="inline-flex h-[30px] min-w-[69px] items-center justify-center rounded-full border border-[#111827] bg-white px-3 text-[11px] font-semibold text-[#111827] shadow-[0_2px_8px_rgba(15,23,42,0.10)] transition-colors hover:bg-[#f7f7f7]"
+>
+
                       <span>{mobileAccountCta.label}</span>
                     </button>
                   )}
@@ -1038,13 +1037,13 @@ export function MarketingNavbar() {
                   onClick={() =>
                     setMobileMenuOpen((currentValue) => !currentValue)
                   }
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/70 text-[#111827] shadow-[0_2px_8px_rgba(15,23,42,0.10),0_1px_0_rgba(255,255,255,0.9)_inset] backdrop-blur-md transition-all hover:bg-white/90 hover:shadow-[0_4px_14px_rgba(15,23,42,0.14)] lg:hidden"
+                  className="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/60 bg-white/70 text-[#111827] shadow-[0_2px_8px_rgba(15,23,42,0.10),0_1px_0_rgba(255,255,255,0.9)_inset] backdrop-blur-md transition-all hover:bg-white/90 hover:shadow-[0_4px_14px_rgba(15,23,42,0.14)] lg:hidden"
                   aria-label="Open navigation menu"
                 >
                   {mobileMenuOpen ? (
-                    <X className="h-5 w-5" />
+                    <X className="h-[15px] w-[15px]" />
                   ) : (
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-[15px] w-[15px]" />
                   )}
                 </button>
               </div>
@@ -1213,7 +1212,7 @@ export function MarketingNavbar() {
             {/* Treatment Categories */}
             <div className="border-t border-gray-200">
               <div className="px-6 pt-5 pb-3">
-                <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase">
+                <p className="text-[1] font-semibold tracking-widest text-gray-500 uppercase">
                   Treatment Categories
                 </p>
               </div>
@@ -1284,7 +1283,7 @@ export function MarketingNavbar() {
             </section>
             {/* Get Started */}
             <div className="border-t border-gray-200 px-6 pt-6 pb-6">
-              <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase mb-4">
+              <p className="text-[1.75] font-semibold tracking-widest text-gray-500 uppe mb-4">
                 Get Started
               </p>
               <Link href="/tirzepatide-injections" onClick={closeMobileMenu}>
@@ -1316,7 +1315,7 @@ export function MarketingNavbar() {
 
             {/* Discover HealSend */}
             <div className="border-t border-gray-200 px-6 pt-6 pb-10">
-              <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase mb-4">
+              <p className="text-[1.75] font-bold tracking-widest text-gray-500 uppe mb-4">
                 Discover HealSend
               </p>
               <div className="space-y-4">
@@ -1349,13 +1348,13 @@ export function MarketingNavbar() {
 
                 <div className="flex items-center justify-between border-b border-gray-100 px-5 pb-2 pt-3">
   <button
-    type="button"
-    onClick={() => setMobileSection(null)}
-    aria-label="Back to menu"
-    className="inline-flex h-9 w-9 items-center justify-center text-[#1c1a24]"
-  >
-    <ChevronLeft className="h-4 w-4" />
-  </button>
+  type="button"
+  onClick={() => setMobileSection(null)}
+  aria-label="Back"
+  className="inline-flex h-10 w-10 items-center justify-center text-[#1c1a24]"
+>
+  <ChevronLeft className="h-8 w-8" />
+</button>
 
   <div className="flex items-center gap-1">
     {isAuthenticated ? (
@@ -1392,7 +1391,7 @@ export function MarketingNavbar() {
 
                 <div className="flex-1 overflow-y-auto">
                   <div className="px-6 pt-5 pb-3">
-                    <p className="text-[11px] font-semibold tracking-widest text-gray-400 uppercase">
+                    <p className="text-[1.25] font-bold tracking-widest text-gray-500 uppercase">
                       {activeNavCategory.label}
                     </p>
                   </div>
@@ -1831,11 +1830,11 @@ export function MarketingProductCarousel({ products, eagerImages = false }) {
                 </div>
 
 
-                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                <div className="flex flex-1 flex-col p-3 sm:p-6">
                   <h3 className="mb-2 text-xl font-bold text-[#7b75f0]">
                     {product.title}
                   </h3>
-                  <p className="mb-8 flex-1 text-sm text-gray-600">
+                  <p className="mb-4 flex-1 text-sm text-gray-600">
                     {product.price}
                   </p>
 
